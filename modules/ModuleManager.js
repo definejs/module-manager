@@ -3,7 +3,7 @@ const Module = require('./ModuleManager/Module');
 
 const mapper = new Map();
 
-
+let idCounter = 0;
 
 
 class ModuleManager {
@@ -21,8 +21,11 @@ class ModuleManager {
         let Emitter = config.Emitter;
         let emitter = Emitter ? new Emitter(this) : null;
 
+        let id = `${config.idPrefix}-${idCounter++}`;
+
         let meta = {
-            'id$module': {},
+            'id': id,                       //实例的 id，方便调试。
+            'id$module': {},                //
             'id$data': {},                  //模块关联的自定义数据，仅供模块的工厂函数中内部使用。
             'seperator': config.seperator,  //父子模块命名中的分隔符，如 `User/List/API`。
             'cross': config.cross,          //是否允许跨级加载模块。
@@ -70,6 +73,11 @@ class ModuleManager {
 
         mapper.set(this, meta);
 
+        Object.assign(this, {
+            'id': meta.id,
+        });
+
+
         //全局地监听每个模块的首次加载事件。
         this.on('require', function (id, module, exports) {
             //触发被加载模块的首次加载事件。
@@ -86,6 +94,11 @@ class ModuleManager {
         });
 
     }
+
+    // /**
+    // * 实例的 id。
+    // */    
+    // id = ''
 
 
     /**
