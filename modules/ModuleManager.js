@@ -21,7 +21,7 @@ class ModuleManager {
         let Emitter = config.Emitter;
         let emitter = Emitter ? new Emitter(this) : null;
 
-        let id = `${config.idPrefix}-${idCounter++}`;
+        let id = `definejs-ModuleManager-${idCounter++}`;
 
         let meta = {
             'id': id,                       //实例的 id，方便调试。
